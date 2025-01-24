@@ -14,7 +14,7 @@ class Database {
             const connection = await this._getConnection(false)
             try {
                 const dbExists = await this.checkDatabaseExisits(connection)
-                console.log(dbExists ? 'Database exists' : 'Database does not exisit')
+                console.log(dbExists ? 'Database exists' : 'Database does not exisist. Building Database')
 
                 await connection.query(`CREATE DATABASE IF NOT EXISTS ${config.db.connection.database}`)
                 await connection.query(`USE ${config.db.connection.database}`)
@@ -30,8 +30,8 @@ class Database {
         }
     }
 
-    async query(connection, sql, params) {
-        const [results] = await connection.execute(sql, params)
+    async query(connection, sql) {
+        const [results] = await connection.execute(sql)
         return results
     }
 
@@ -45,7 +45,7 @@ class Database {
             host: config.db.connection.host,
             user: config.db.connection.user,
             password: config.db.connection.password,
-            connectTimeout: config.db.connection.connectTimeout,
+            connectTimeout: config.db.connection.connectionTimeout,
             decimalNumbers: true
         })
         if (setUse) {
