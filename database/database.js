@@ -1,5 +1,5 @@
 import config from "../config.js"
-import dbModel from '../dbModel.js'
+import dbModel from './dbModel.js'
 
 import mysql from 'mysql2/promise'
 

@@ -1,9 +1,10 @@
-import { DB } from "/database/database.js";
-import config from "../config.js";
-import { Configuration, OpenAIApi } from "openai";
+import {DB}  from "./database/database.js";
+import config from "./config.js";
+import OpenAI from "openai";
 import fs from "fs/promises";
 
 const commonSQLOnlyRequest = " Give me a SQL SELECT statement that answers the question. Only respond with SQL syntax. If there is an error, do not explain it!";
+const setupSqlScript = ""
 const strategies = {
     ZeroShot: setupSqlScript + commonSQLOnlyRequest,
 };
@@ -13,11 +14,11 @@ const questions = [
 ];
 
 async function getChatGPTResponse(query) {
-    const configuration = new Configuration({
+    const configuration = new OpenAI.Configuration({
         apiKey: config.openApiKey,
     });
 
-    const openai = new OpenAIApi(configuration);
+    const openai = new OpenAI.OpenAIApi(configuration);
 
     const responseStream = await openai.createChatCompletion(
         {
@@ -91,6 +92,16 @@ async function saveResponsesToFile(responses, strategyName) {
 }
 
 async function main() {
+    try {
+        const query = "What is the capital of France?";
+        const response = await getChatGPTResponse(query);
+        console.log("Response from ChatGPT:", response);
+    } catch (error) {
+        console.error("Error during test:", error.message);
+    }
+}
+
+async function main2() {
     for (const strat in strategies) {
         const responses = { strategy: strat, prompt_prefix: strategies[strat] };
         const questionResults = [];
