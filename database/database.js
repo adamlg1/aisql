@@ -14,7 +14,7 @@ class Database {
             const connection = await this._getConnection(false)
             try {
                 const dbExists = await this.checkDatabaseExisits(connection)
-                console.log(dbExists ? 'Database exists' : 'Database does not exisist. Building Database')
+                console.log(dbExists ? 'Database exists' : 'Database does not exist. Building Database')
 
                 await connection.query(`CREATE DATABASE IF NOT EXISTS ${config.db.connection.database}`)
                 await connection.query(`USE ${config.db.connection.database}`)
